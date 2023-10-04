@@ -28,3 +28,44 @@ Continuously monitor the model's performance in production. Periodically retrain
 Implement a feedback loop to collect data on actual customer churn outcomes. Use this feedback to improve the model's performance and maintain its accuracy.
 ### **Customer Retention Strategies**
 Finally, use the model's predictions to implement targeted customer retention strategies. Identify high-risk customers and take proactive measures to retain them, such as offering personalized incentives or customer support.
+
+
+A sample code for the above process using mock data generated on mockeroo
+
+'''python
+# Import necessary libraries
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+
+# Load your dataset
+data = pd.read_csv("C:/Users/Admin/Desktop/python/Lux academy/DataScience_Bootcamp/customer_data.csv")
+
+# Data preprocessing: One-hot encoding for categorical features
+data_encoded = pd.get_dummies(data, columns=["first_name", "last_name", "country", "favorite_color"])
+
+
+# Define features and target variable
+X = data_encoded.drop("customer_satisfaction", axis=1)       # Features
+y = data_encoded["customer_satisfaction"].astype(float)       # Target variable
+
+# Split data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Create and train a machine learning model (Random Forest in this example)
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+model.fit(X_train, y_train)
+
+# Make predictions on the test set
+y_pred = model.predict(X_test)
+
+# Evaluate the model's performance
+accuracy = accuracy_score(y_test, y_pred)
+report = classification_report(y_test, y_pred)
+conf_matrix = confusion_matrix(y_test, y_pred)
+
+print(f"Accuracy: {accuracy}")
+print(report)
+print(conf_matrix)
+'''
